@@ -237,7 +237,8 @@ body.hdr-light .menu-btn{border-color:rgba(22,20,15,.3)}
 .work-row .st{font:600 11px/1.4 var(--f-label);letter-spacing:.14em;text-transform:uppercase;color:var(--muted-l);text-align:right}
 .work-row.dim{opacity:.18}
 .peek{position:fixed;left:0;top:0;width:340px;aspect-ratio:7/5;max-width:100%;pointer-events:none;z-index:40;border-radius:14px;overflow:hidden;opacity:0;transform:translate(-50%,-50%) scale(.6);transition:opacity .3s;box-shadow:0 30px 60px rgba(22,20,15,.35)}
-.peek img{width:100%;height:100%;display:block}
+.peek img{width:100%;height:100%;display:block;object-fit:cover}
+.peek.is-real .ph{display:none}
 .peek .ph{position:absolute;left:10px;top:10px;font:600 9.5px/1 var(--f-label);letter-spacing:.14em;text-transform:uppercase;color:var(--ink);background:var(--gold);padding:6px 8px;border-radius:999px}
 .work-foot{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;margin-top:32px}
 .work-foot p{margin:0;color:var(--muted-l);font-size:15px;max-width:52ch}
@@ -309,6 +310,12 @@ body.hdr-light .menu-btn{border-color:rgba(22,20,15,.3)}
 .member .cap{position:absolute;left:0;right:0;bottom:0;padding:16px;background:linear-gradient(transparent,rgba(247,243,235,.96) 40%);display:grid;gap:4px}
 .member .cap b{font:600 15px/1.25 var(--f-head);color:var(--text-l)}
 .member .cap span{font-size:13px;color:var(--muted-l)}
+.member.real{border:0;background:var(--ink)}
+.member.real img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1s var(--ease)}
+.member.real:hover img{transform:scale(1.05)}
+.member.real .cap{background:linear-gradient(transparent,rgba(15,14,13,.92) 45%)}
+.member.real .cap b{color:#f8f4ec}
+.member.real .cap span{color:var(--muted-d)}
 @media (max-width:899px){.voices-grid,.team-head{grid-template-columns:minmax(0,1fr)}.deck{justify-self:start;height:380px}.team-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:420px){.qcard{padding:24px}.deck{height:400px}}
 
@@ -631,8 +638,8 @@ body.show-added [data-added]::after{content:"Added by Claude";position:absolute;
           </div>
         </div>
         <div class="team-grid">
-          <div class="member" data-ph><div class="sil"></div><div class="scan"></div><div class="cap"><span class="ph-tag">Placeholder</span><b>Founder / Managing Director</b><span>Name and photo to come</span></div></div>
-          <div class="member" data-ph><div class="sil"></div><div class="scan"></div><div class="cap"><span class="ph-tag">Placeholder</span><b>Creative Director</b><span>Name and photo to come</span></div></div>
+          <div class="member real"><img src="img/team-founder.jpg" alt="Founder &amp; Creative Director" loading="lazy"><div class="scan"></div><div class="cap"><b>Founder &amp; Creative Director</b><span>Name to be added</span></div></div>
+          <div class="member real"><img src="img/team-cofounder.jpg" alt="Co-Founder &amp; Business Development Lead" loading="lazy"><div class="scan"></div><div class="cap"><b>Co-Founder &amp; Business Development Lead</b><span>Name to be added</span></div></div>
           <div class="member" data-ph><div class="sil"></div><div class="scan"></div><div class="cap"><span class="ph-tag">Placeholder</span><b>Website Designer &amp; Developer</b><span>Name and photo to come</span></div></div>
           <div class="member" data-ph><div class="sil"></div><div class="scan"></div><div class="cap"><span class="ph-tag">Placeholder</span><b>AI & Automation Specialist</b><span>Name and photo to come</span></div></div>
         </div>
@@ -716,7 +723,7 @@ body.show-added [data-added]::after{content:"Added by Claude";position:absolute;
         <li><a href="work.html">Our Work</a></li><li><a href="testimonials.html">Testimonials</a></li><li><a href="team.html">Our Team</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li></ul></div>
       <div><h4>Our services</h4><ul id="ftSvc"></ul></div>
       <div><h4>Connect with us</h4><ul>
-        <li><a href="#" data-soon="The LinkedIn link">LinkedIn</a></li><li><a href="#" data-soon="The Instagram link">Instagram</a></li><li><a href="#" data-soon="The Facebook link">Facebook</a></li><li><a href="#" data-soon="The YouTube link">YouTube</a></li></ul></div>
+        <li><a href="#" data-soon="The LinkedIn link">LinkedIn</a></li><li><a href="https://www.instagram.com/tavoryn95/" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://www.facebook.com/profile.php?id=61596569376422" target="_blank" rel="noopener">Facebook</a></li><li><a href="#" data-soon="The YouTube link">YouTube</a></li></ul></div>
     </div>
   </div>
   <div class="wrap ft-bot"><span>© 2026 TAVORYN. All Rights Reserved.</span><span><a href="privacy.html">Privacy Policy</a> · <a href="terms.html">Terms &amp; Conditions</a></span></div>
@@ -883,7 +890,7 @@ const peek=$('#peek'),peekImg=$('#peekImg');
 let peekOn=false,px=0,py=0,mx=innerWidth/2,my=innerHeight/2;
 if(fine){
   $$('.work-row',workList).forEach(r=>{
-    r.addEventListener('pointerenter',()=>{const k=r.dataset.k;if(!mockCache[k])mockCache[k]=mock(k);peekImg.src=mockCache[k];peekOn=true;});
+    r.addEventListener('pointerenter',()=>{const k=r.dataset.k;const REAL={web:'img/web-jewelry-appraiser.jpg',shop:'img/web-peach-lily.jpg',social:'img/social-bonos-menu.jpg'};if(!mockCache[k])mockCache[k]=REAL[k]||mock(k);peekImg.src=mockCache[k];peek.classList.toggle('is-real',!!REAL[k]);peekOn=true;});
     r.addEventListener('pointerleave',()=>{peekOn=false;});
   });
 }
