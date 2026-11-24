@@ -752,7 +752,7 @@ body.hdr-light .nav a[aria-current="page"]{background:rgba(22,20,15,.08)}
 
 /* ================= BLOG ================= */
 .bfeat{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(24px,4vw,56px);align-items:center;text-decoration:none;color:inherit;transition:transform .6s var(--ease)}
-.bfeat .im{position:relative;border-radius:26px;overflow:hidden;aspect-ratio:16/11;background:var(--ink)}
+.bfeat .im{position:relative;border-radius:26px;overflow:hidden;aspect-ratio:16/9;background:var(--ink)}
 .bfeat .im img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 1.2s var(--ease)}
 .bfeat:hover .im img{transform:scale(1.05)}
 .bfeat .im .ph-tag,.pcard .im .ph-tag{background:var(--gold);color:var(--ink);border-color:var(--gold)}
@@ -796,3 +796,16 @@ body.hdr-light .nav a[aria-current="page"]{background:rgba(22,20,15,.08)}
 .member.real .cap{background:linear-gradient(transparent,rgba(15,14,13,.92) 45%)}
 .member.real .cap b{color:#f8f4ec}
 .member.real .cap span{color:var(--muted-d)}
+.prose ul{margin:0 0 1.3em;padding-left:1.2em}
+.prose li{margin:0 0 .45em}
+.prose li::marker{color:var(--gold)}
+.prose .plab{font:600 11px/1.4 var(--f-label);letter-spacing:.16em;text-transform:uppercase;color:var(--gold-deep);margin:1.4em 0 .5em}
+.prose .checks{list-style:none;padding:0;display:grid;gap:8px}
+.prose .checks label{display:flex;gap:12px;align-items:flex-start;cursor:pointer;padding:12px 14px;border:1px solid var(--rule-l);border-radius:12px;background:var(--paper);transition:border-color .2s}
+.prose .checks label:hover{border-color:var(--gold)}
+.prose .checks input{accent-color:var(--gold);width:18px;height:18px;margin-top:4px;flex:none}
+.prose .checks input:checked+span{color:var(--muted-l);text-decoration:line-through;text-decoration-color:var(--gold)}
+.pfig{margin:2em 0;display:grid;gap:10px}
+.pfig img{width:100%;border-radius:18px;display:block;box-shadow:0 20px 50px rgba(22,20,15,.12)}
+.pfig figcaption{font-size:14px;color:var(--muted-l);text-align:center}
+@media (min-width:1000px){.pfig{margin-left:-12%;margin-right:-12%}}
