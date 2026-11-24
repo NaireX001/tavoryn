@@ -1006,7 +1006,7 @@ if('IntersectionObserver' in window){
 const heroTrack=$('#journey');
 const hud=$('.hud');const beats=$$('.beat'),chapterEls=$$('#chapters span'),meter=$('#meter'),bar=$('#bar'),flash=$('#flash'),reveal=$('#reveal'),skip=$('#skip'),labelsBox=$('#labels');
 const HERO_SERVICES=["Branding","Websites","SEO","Social & Ads","AI & Automation","Video & AI","Customer Support","CRM"];
-const hero=(function initHero(){
+const hero=(function(){try{return (function initHero(){
   if(!window.THREE)return null;
   const canvas=$('#gl');let renderer;
   try{renderer=new THREE.WebGLRenderer({canvas,antialias:!small,powerPreference:'high-performance'});}catch(e){canvas.style.display='none';return null;}
@@ -1143,7 +1143,7 @@ const hero=(function initHero(){
     renderer.render(scene,camera);
   }
   return {update};
-})();
+})();}catch(e){console.error('3D hero failed to start:',e);const c=document.getElementById('gl');if(c)c.style.display='none';return null;}})();
 
 let lastChapter=-1;
 function heroOverlay(p){
@@ -1231,18 +1231,21 @@ measureAll();
 
 /* ================= LOOP ================= */
 let heroP=progress(heroTrack),lastY=scrollY,t0=performance.now();
+let heroOk=true,frameErr=0;
 function frame(now){
-  if(lenis)lenis.raf(now);
+  requestAnimationFrame(frame);
+  if(lenis){try{lenis.raf(now);}catch(e){lenis.destroy&&lenis.destroy();lenis=window.__lenis=null;}}
+  try{
   const vel=scrollY-lastY;lastY=scrollY;
   const raw=progress(heroTrack);heroP+=(raw-heroP)*(reduce?1:0.14);if(Math.abs(raw-heroP)<0.00005)heroP=raw;
   const hr=heroTrack.getBoundingClientRect();const heroVisible=hr.bottom>0;
   const fl=heroOverlay(heroP);
-  if(hero&&heroVisible)hero.update(heroP,reduce?0:(now-t0)/1000);
+  if(hero&&heroOk&&heroVisible){try{hero.update(heroP,reduce?0:(now-t0)/1000);}catch(e){heroOk=false;console.error('3D hero stopped:',e);}}
   updateHeader(fl);updateScrub();updatePillars();updateFan();updateProc();updateMq(vel);updateAudit();updateFooter();
   if(fine){px=lerp(px,mx,0.16);py=lerp(py,my,0.16);const rot=clamp((mx-px)*0.12,-14,14);
     peek.style.opacity=peekOn?1:0;peek.style.transform=`translate(${px.toFixed(1)}px,${py.toFixed(1)}px) translate(-50%,-50%) rotate(${rot.toFixed(2)}deg) scale(${peekOn?1:0.6})`;
     if(!reduce){rx=lerp(rx,mx,0.2);ry=lerp(ry,my,0.2);ring.style.transform=`translate(${rx.toFixed(1)}px,${ry.toFixed(1)}px)`;dot.style.transform=`translate(${mx}px,${my}px)`;}}
-  requestAnimationFrame(frame);
+  }catch(e){if(frameErr++<3)console.error('frame:',e);}
 }
 requestAnimationFrame(frame);
 })();

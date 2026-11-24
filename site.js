@@ -198,13 +198,14 @@ addEventListener('resize',()=>{clearTimeout(measureMq._t);measureMq._t=setTimeou
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(measureMq);measureMq();
 
 let lastY=scrollY;const t0=performance.now();
-function frame(now){if(lenis)lenis.raf(now);const vel=scrollY-lastY;lastY=scrollY;const t=(now-t0)/1000;
+let frameErr=0;
+function frame(now){requestAnimationFrame(frame);if(lenis){try{lenis.raf(now);}catch(e){lenis.destroy&&lenis.destroy();lenis=window.__lenis=null;}}try{const vel=scrollY-lastY;lastY=scrollY;const t=(now-t0)/1000;
   fields.forEach(d=>d(t,vel));
   if(orbit&&!reduce)orbit.style.setProperty('--ry',(t*9+scrollY*0.08).toFixed(2)+'deg');
   updateHeader();updateScrubs();updateLight();updateLits();updateSteps();updateGv();updateMq(vel);updateFooter();
   if(fine&&peek){px=lerp(px,mx,0.16);py=lerp(py,my,0.16);const rot=clamp((mx-px)*0.12,-14,14);peek.style.opacity=peekOn?1:0;peek.style.transform=`translate(${px.toFixed(1)}px,${py.toFixed(1)}px) translate(-50%,-50%) rotate(${rot.toFixed(2)}deg) scale(${peekOn?1:0.6})`;}
   if(fine&&!reduce){rx=lerp(rx,mx,0.2);ry=lerp(ry,my,0.2);ring.style.transform=`translate(${rx.toFixed(1)}px,${ry.toFixed(1)}px)`;dot.style.transform=`translate(${mx}px,${my}px)`;}
-  requestAnimationFrame(frame);}
+  }catch(e){if(frameErr++<3)console.error('frame:',e);}}
 requestAnimationFrame(frame);
 })();
 
