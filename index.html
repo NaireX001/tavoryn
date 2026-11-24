@@ -1085,7 +1085,15 @@ const hero=(function initHero(){
     else{rr(28,26,140,348,12,dim2);[0,1,2,3,4].forEach(i=>rr(44,50+i*36,100,12,4,i===0?gold:dim));[0,1,2].forEach(i=>{rr(190+i*140,30,126,70,10,dim2);rr(204+i*140,46,60,10,4,dim);rr(204+i*140,66,84,18,4,i===1?gold:'rgba(255,190,130,.5)');});
       const hs=[60,95,80,130,110,160,140,190,170,215];hs.forEach((h,i)=>rr(196+i*40,340-h,26,h,5,i===hs.length-1?gold:'rgba(236,122,34,.35)'));}
     g.fillStyle='rgba(255,190,130,.7)';g.font='600 20px Montserrat, monospace';g.fillText(kind==='web'?'WEBSITE':kind==='brand'?'BRAND IDENTITY':'AUTOMATION',kind==='dash'?470:40,380);
-    const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;t.anisotropy=4;return t;}
+    const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;t.anisotropy=4;
+    /* real screen fills the whole frame once loaded; the drawing above is the fallback */
+    const im=new Image();im.onload=()=>{c.width=1280;c.height=800;g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,1280,800);
+      const R=(x,y,w,h,r)=>{g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath();};
+      g.save();R(0,0,1280,800,52);g.clip();const s=Math.max(1280/im.width,800/im.height);g.drawImage(im,(1280-im.width*s)/2,(800-im.height*s)/2,im.width*s,im.height*s);
+      const gr=g.createLinearGradient(0,560,0,800);gr.addColorStop(0,'rgba(10,9,8,0)');gr.addColorStop(1,'rgba(10,9,8,.92)');g.fillStyle=gr;g.fillRect(0,560,1280,240);g.restore();
+      R(3,3,1274,794,50);g.strokeStyle='rgba(236,122,34,.75)';g.lineWidth=6;g.stroke();
+      g.fillStyle='#ffd9b5';g.font='600 36px Montserrat, Poppins, sans-serif';g.fillText(kind==='web'?'WEBSITE':kind==='brand'?'BRAND IDENTITY':'AUTOMATION',60,752);t.needsUpdate=true;};
+    im.src='img/card-'+kind+'.jpg';return t;}
   const cards=[['web',1.75,-12.6,-0.42],['brand',-1.8,-17.8,0.42],['dash',1.75,-23,-0.42]].map(([kind,x,z,ry])=>{const m=new THREE.Mesh(new THREE.PlaneGeometry(1.92,1.2),new THREE.MeshBasicMaterial({map:cardTex(kind),transparent:true,opacity:0,depthWrite:false}));m.position.set(x,LOGO_Y+0.35,z);m.rotation.y=ry;scene.add(m);return m;});
   const endLight=makeGlow(10,0);endLight.material.fog=false;endLight.position.set(0,LOGO_Y+0.35,-38);
 
