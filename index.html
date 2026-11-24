@@ -1,9 +1,3 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
 <title>TAVORYN Website</title>
 <script>try{if(sessionStorage.getItem('vwipe'))document.documentElement.classList.add('wiping')}catch(e){}</script>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -425,9 +419,6 @@ body.show-added [data-added]::after{content:"Added by Claude";position:absolute;
   .btn,.work-row .nm,.qcard,.drawer-panel,.menu{transition:none}
 }
 </style>
-</head>
-<body>
-
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
@@ -891,7 +882,7 @@ const peek=$('#peek'),peekImg=$('#peekImg');
 let peekOn=false,px=0,py=0,mx=innerWidth/2,my=innerHeight/2;
 if(fine){
   $$('.work-row',workList).forEach(r=>{
-    r.addEventListener('pointerenter',()=>{const k=r.dataset.k;const REAL={web:'img/web-jewelry-appraiser.jpg',shop:'img/web-peach-lily.jpg',social:'img/social-bonos-menu.jpg'};if(!mockCache[k])mockCache[k]=REAL[k]||mock(k);peekImg.src=mockCache[k];peek.classList.toggle('is-real',!!REAL[k]);peekOn=true;});
+    r.addEventListener('pointerenter',()=>{const k=r.dataset.k;const REAL={web:'img/web-jewelry-appraiser.jpg',shop:'img/web-peach-lily.jpg',social:'img/social-bonos-menu.jpg',ai:'img/ai-thread-generator.jpg'};if(!mockCache[k])mockCache[k]=REAL[k]||mock(k);peekImg.src=mockCache[k];peek.classList.toggle('is-real',!!REAL[k]);peekOn=true;});
     r.addEventListener('pointerleave',()=>{peekOn=false;});
   });
 }
@@ -1248,6 +1239,3 @@ function frame(now){
 requestAnimationFrame(frame);
 })();
 </script>
-
-</body>
-</html>
